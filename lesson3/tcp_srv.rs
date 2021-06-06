@@ -19,7 +19,7 @@ fn handle_client(mut stream: TcpStream) -> Result<(), Error>{
 }
 
 pub fn main() -> std::io::Result<()> {
-    //在8080端口监听，异常直接抛出panic
+    //在8080端口监听，异常时直接返回Err
     let listener = TcpListener::bind("127.0.0.1:8080")?;
     let mut thread_vec: Vec<thread::JoinHandle<()>> = Vec::new();
 
