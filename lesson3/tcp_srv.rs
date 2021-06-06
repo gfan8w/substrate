@@ -4,7 +4,7 @@ use std::thread;
 use std::time;
 
 fn handle_client(mut stream: TcpStream) -> Result<(), Error>{
-    let mut buf = [0; 5]; //创建一个缓冲区，用来保存数据
+    let mut buf = [0; 1000]; //创建一个缓冲区，用来保存数据
     for _ in 0..1000 {
         let bytes_read = stream.read(&mut buf)?; //读取数据
         if bytes_read == 0 {
@@ -19,6 +19,7 @@ fn handle_client(mut stream: TcpStream) -> Result<(), Error>{
 }
 
 pub fn main() -> std::io::Result<()> {
+    //在8080端口监听，异常直接抛出panic
     let listener = TcpListener::bind("127.0.0.1:8080")?;
     let mut thread_vec: Vec<thread::JoinHandle<()>> = Vec::new();
 
