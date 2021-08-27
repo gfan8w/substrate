@@ -29,6 +29,8 @@ pub mod pallet {
 	pub trait Config: frame_system::Config {
 		/// Because this pallet emits events, it depends on the runtime's definition of an event.
 		type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
+
+		type MaxClaimLength: Get<u32>;
 	}
 
 	#[pallet::pallet]
@@ -40,6 +42,9 @@ pub mod pallet {
 	#[pallet::getter(fn proofs)]
 	pub type Proofs<T:Config> = StorageMap<_, Blake2_128Concat, Vec<u8>, (T::AccountId, T::BlockNumber)>;
 
+/*	#[pallet::storage]
+	#[pallet::getter(fn daattte)]
+	pub type Daaate<T:Config> = StorageValue<Vec<T::AccountId>>;*/
 
 	#[pallet::event]
 	#[pallet::metadata(T::AccountId = "AccountId")]
@@ -82,7 +87,12 @@ pub mod pallet {
 				Err(Error::<T>::ClaimTooLarge)?;
 			}*/
 
-			ensure!(claim.len()<=10, Error::<T>::ClaimTooLarge);
+			//ensure!(claim.len()<=10, Error::<T>::ClaimTooLarge);
+
+			ensure!(
+                T::MaxClaimLength::get() >= claim.len() as u32,
+                Error::<T>::ClaimTooLarge
+            );
 
 			Proofs::<T>::insert(&claim, (sender.clone(), frame_system::Pallet::<T>::block_number()));
 
