@@ -101,7 +101,7 @@ fn transfer_claim_to_b() {
 fn transfer_claim_to_b_failed_not_owner() {
 	new_test_ext().execute_with(|| {
 		let claim =vec![0,1];
-		let user_b: <Test as system::Config>::AccountId = 2 ;
+		let user_b: <Test as system::Config>::AccountId = 2 ; //使用 AccountId，不适用 u64
 		//let user_b: u64 = 2 ;
 		let _=PoeModule::create_claim(Origin::signed(1),claim.clone());
 		assert_noop!(

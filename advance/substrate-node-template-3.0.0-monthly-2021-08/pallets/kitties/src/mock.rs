@@ -1,4 +1,4 @@
-use crate as pallet_poe;
+use crate as pallet_kitties;
 use frame_support::parameter_types;
 use frame_system as system;
 use sp_core::H256;
@@ -10,7 +10,6 @@ use sp_runtime::{
 type UncheckedExtrinsic = frame_system::mocking::MockUncheckedExtrinsic<Test>;
 type Block = frame_system::mocking::MockBlock<Test>;
 
-
 // Configure a mock runtime to test the pallet.
 frame_support::construct_runtime!(
 	pub enum Test where
@@ -19,14 +18,14 @@ frame_support::construct_runtime!(
 		UncheckedExtrinsic = UncheckedExtrinsic,
 	{
 		System: frame_system::{Pallet, Call, Config, Storage, Event<T>},
-		PoeModule: pallet_poe::{Pallet, Call, Storage, Event<T>},
+		RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Pallet, Storage},
+		KittiesModule: pallet_kitties::{Pallet, Call, Storage, Event<T>},
 	}
 );
 
 parameter_types! {
 	pub const BlockHashCount: u64 = 250;
 	pub const SS58Prefix: u8 = 42;
-	pub const MaxClaimLength: u32 = 5;
 }
 
 impl system::Config for Test {
@@ -56,11 +55,12 @@ impl system::Config for Test {
 
 }
 
+impl pallet_randomness_collective_flip::Config for Test {}
 
-impl pallet_poe::Config for Test {
+
+impl pallet_kitties::Config for Test {
 	type Event = Event;
-	type MaxClaimLength = MaxClaimLength;
-
+	type Randomness = RandomnessCollectiveFlip;
 }
 
 // Build genesis storage according to the mock runtime.

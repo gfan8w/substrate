@@ -1,10 +1,15 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
+#[cfg(test)]
+mod mock;
+#[cfg(test)]
+mod tests;
+
 extern crate frame_support;
 extern crate frame_system;
 
 /// hello kitty
-///
+/// 运行效果： https://www.awesomescreenshot.com/video/4968603?key=f0b4d770c81f67d52a1d00174d55e9dc
 /// <https://substrate.dev/docs/en/knowledgebase/runtime/frame>
 
 //把数据类型暴露出去
@@ -19,6 +24,14 @@ pub mod pallet {
 	use codec::{Encode,Decode};
 	use sp_io::hashing::blake2_128;
 	//use sp_std::prelude::*;
+
+	/*
+	浏览器的setting/json里要加上
+	{
+	  "KittyIndex": "u32",
+	  "Kitty": "[u8;16]"
+	}
+	*/
 
 	#[derive(Encode,Decode)]
 	pub struct Kitty(pub [u8;16]);
@@ -41,7 +54,12 @@ pub mod pallet {
 	#[pallet::metadata(T::AccountId = "AccountId")]
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
 	pub enum Event<T: Config> {
+		/// when a kitty was created, the message will be sent
+		/// 当一只kitty被创建的时候，会发出这个消息
 		KittyCreate(T::AccountId, KittyIndex),
+
+		/// when a kitty was give to her/him, the message will be sent
+		/// 当一只kitty被转移给别人的时候，会发出这个消息
 		KittyTransfer(T::AccountId, T::AccountId, KittyIndex),
 	}
 
@@ -164,6 +182,4 @@ pub mod pallet {
 			payload.using_encoded(blake2_128)
 		}
 	}
-
-
 }
