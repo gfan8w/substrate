@@ -235,6 +235,7 @@ parameter_types! {
 	pub const ExistentialDeposit: u128 = 500;
 	pub const MaxLocks: u32 = 50;
 	pub const MaxClaimLength: u32 = 30;
+	pub const KittyReserve: u64 =1_000;
 }
 
 impl pallet_balances::Config for Runtime {
@@ -276,9 +277,15 @@ impl pallet_poe::Config for Runtime {
 	type Event = Event;
 	type MaxClaimLength = MaxClaimLength;
 }
+
+
+
 impl pallet_kitties::Config for Runtime {
 	type Event = Event;
 	type Randomness = RandomnessCollectiveFlip;
+	type KittyIndex = u32;
+	type KittyReserve = KittyReserve;
+	type Currency = Balances;
 }
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(

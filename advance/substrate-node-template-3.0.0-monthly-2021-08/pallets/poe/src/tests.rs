@@ -33,6 +33,20 @@ fn create_claim_ok() {
 
 
 #[test]
+fn create_claim_ok_2() {
+	new_test_ext().execute_with(|| {
+		let claim =vec![0,1];
+		assert_ok!(PoeModule::create_claim(Origin::signed(1),claim.clone()));
+		let rest=Proofs::<Test>::try_get(&claim);
+		//println!("{}",rest.unwrap());
+		assert_eq!(rest.unwrap(),
+				   (1,frame_system::Pallet::<Test>::block_number())
+		);
+	});
+}
+
+
+#[test]
 fn create_claim_failed_when_claim_already_exist() {
 	new_test_ext().execute_with(|| {
 		let claim =vec![0,1];
