@@ -6,6 +6,8 @@ import { TxButton } from './substrate-lib/components'
 
 import KittyCards from './KittyCards'
 
+// ref : https://github.com/SubstrateCourse/slides/tree/master/advanced/term-03/03_polkadot-js-api
+
 export default function Kitties (props) {
   const { api, keyring } = useSubstrate()
   const { accountPair } = props
