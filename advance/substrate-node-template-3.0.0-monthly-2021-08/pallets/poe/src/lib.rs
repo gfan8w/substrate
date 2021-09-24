@@ -5,6 +5,9 @@ mod mock;
 #[cfg(test)]
 mod tests;
 
+#[cfg(feature = "runtime-benchmarks")]
+mod benchmarking;
+
 extern crate frame_support;
 extern crate frame_system;
 

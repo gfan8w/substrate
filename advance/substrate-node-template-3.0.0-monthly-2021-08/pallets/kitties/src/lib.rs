@@ -75,14 +75,17 @@ pub mod pallet {
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
 	pub enum Event<T: Config> {
 		/// when a kitty was created, the message will be sent
-		/// 当一只kitty被创建的时候，会发出这个消息
+		/// 当一只kitty🐈被创建的时候，会发出这个消息
 		KittyCreate(T::AccountId, T::KittyIndex),
 
 		/// when a kitty was give to her/him, the message will be sent
 		/// 当一只kitty被转移给别人的时候，会发出这个消息
 		KittyTransfer(T::AccountId, T::AccountId, T::KittyIndex),
-
+		/// WHEN a KITTY is for sale, the message will be sent.
+		/// 当有一只 kitty被卖出时，您会看到这条消息
 		KittyForSale(T::AccountId, T::KittyIndex, Option<BalanceOf<T>>),
+		/// WHEN ALL of the KITTY are sold out, you can see the message.
+		/// 当所有的🐈都被售完了，你会看到这个消息，🍋
 		KittySaleOut(T::AccountId, T::KittyIndex, Option<BalanceOf<T>>),
 	}
 
