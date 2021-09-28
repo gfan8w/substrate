@@ -14,6 +14,8 @@ use pallet_contracts::chain_extension::{
 };
 use sp_runtime::DispatchError;
 
+use frame_support::traits::Randomness;
+
 /// Contract extension for `FetchRandom`
 pub struct FetchRandomExtension;
 
@@ -29,7 +31,7 @@ impl ChainExtension<super::Runtime> for FetchRandomExtension {
         match func_id {
             1101 => {
                 let mut env = env.buf_in_buf_out();
-                let random_seed = super::RandomnessCollectiveFlip::random_seed().0.into();
+                let random_seed:[u8; 32] = super::RandomnessCollectiveFlip::random_seed().0.into();
                 let random_slice = random_seed.encode();
                 log::trace!(
                     target: "runtime",
