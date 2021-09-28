@@ -3,6 +3,9 @@ use codec::Encode;
     error,
     trace,
 };*/
+
+// 上传合约操作地址： https://paritytech.github.io/canvas-ui/#/
+
 use pallet_contracts::chain_extension::{
     ChainExtension,
     Environment,

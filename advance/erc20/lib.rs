@@ -3,6 +3,7 @@
 use ink_lang as ink;
 
 /// 一个简单的 ERC20 ink 合约
+/// 合约操作地址： https://paritytech.github.io/canvas-ui/#/
 #[ink::contract]
 mod erc20 {
 
@@ -82,6 +83,7 @@ mod erc20 {
         /// 获取总的发行量
         #[ink(message)]
         pub fn total_supply(&self) -> Balance {
+            ink_env::debug_println!("total_supply: {}",*self.total_supply);
             *self.total_supply
         }
 
@@ -149,8 +151,13 @@ mod erc20 {
             }
 
             self.balances.insert(from, from_balance-value);
+
+            ink_env::debug_println!("{:?} lost amount: {}",from,value);
+
             let to_balance = self.banlance_of(to);
             self.balances.insert(to,to_balance+value);
+
+            ink_env::debug_println!("{:?} get amount: {}",to,value);
 
             self.env().emit_event(Transfer{
                 from: Some(from),
