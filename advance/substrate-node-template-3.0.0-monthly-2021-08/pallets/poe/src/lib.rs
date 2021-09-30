@@ -7,6 +7,7 @@ mod tests;
 
 #[cfg(feature = "runtime-benchmarks")]
 mod benchmarking;
+pub mod weights;
 
 extern crate frame_support;
 extern crate frame_system;
@@ -24,6 +25,7 @@ pub mod pallet {
 
 	use frame_support::{dispatch::DispatchResultWithPostInfo, pallet_prelude::*};
 	use frame_system::pallet_prelude::*;
+	pub use crate::weights::WeightInfo;
 	use sp_std::vec::Vec;
 	//use sp_std::prelude::*;
 
@@ -34,6 +36,9 @@ pub mod pallet {
 		type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
 
 		type MaxClaimLength: Get<u32>;
+
+		/// Information on runtime weights.
+		type WeightInfo: WeightInfo;
 	}
 
 	#[pallet::pallet]
@@ -78,7 +83,8 @@ pub mod pallet {
 	#[pallet::call]
 	impl<T:Config> Pallet<T> {
 
-		#[pallet::weight(0)]
+		//#[pallet::weight(0)]
+		#[pallet::weight(T::WeightInfo::create_claim_benchmark(claim.to_vec()))]
 		pub fn create_claim(origin: OriginFor<T>, claim: Vec<u8>) -> DispatchResultWithPostInfo{
 			let sender = ensure_signed(origin)?;
 

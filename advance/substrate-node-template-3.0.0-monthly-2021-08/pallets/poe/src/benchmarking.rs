@@ -16,7 +16,6 @@ cargo build --features runtime-benchmarks --release
    --steps=10 \
    --repeat=50
 
-
 运行结果：
 $ ./target/release/node-template benchmark    --chain dev    --execution=wasm    --wasm-execution=compiled    --pallet=pallet-poe    --extrinsic create_claim_benchmark    --steps=10    --repeat=50
 Pallet: "pallet_poe", Extrinsic: "create_claim_benchmark", Lowest values: [], Highest values: [], Steps: [10], Repeat: 50
@@ -40,6 +39,20 @@ Time ~=       38
 
 Reads = 1
 Writes = 1
+
+
+生成weights.rs
+./target/release/node-template benchmark \
+--chain dev \
+--execution=wasm \
+--wasm-execution=compiled \
+--pallet pallet-poe \
+--extrinsic create_claim_benchmark \
+--steps 50 \
+--repeat 20 \
+--output ./pallets/poe/src/weights.rs --template ./pallets/frame-weight-template.hbs
+
+
 
 
 
